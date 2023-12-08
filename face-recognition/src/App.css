@@ -1,38 +1,69 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  background-color: #282c34;
+  align-items: center;
+  min-height: 100vh; /* Make sure the app fills the viewport height */
+  display: flex; /* Use flex to control the layout */
+  flex-direction: column; /* Stack children vertically */
 }
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  width: 100%;
+  /* Removed min-height to allow the header to take only the space it needs */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: space-between; This was causing the gap */
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.navbar {
+  width: 100%;
+  background-color: #61dafb; /* Adjust the color to match your navbar */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.question-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 100px; /* Adjust this value based on the height of your navbar */
+  width: 100%;
+  margin: 0 auto; /* This will center the container */
+}
+
+.video-container {
+  width: 100%;
+  height: 600px;
+  /* Set a specific height or leave it to be determined by content */
+}
+
+.submit-button {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  display: block;
+  width: fit-content;
+  margin: 20px auto; /* This will center the button */
+}
+
+/* Responsive layout adjustments if necessary */
+@media (max-width: 768px) {
+  .question-container {
+    flex-direction: column;
   }
-  to {
-    transform: rotate(360deg);
-  }
+}
+
+.wallet-address-input {
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  display: block;
+  width: fit-content;
 }

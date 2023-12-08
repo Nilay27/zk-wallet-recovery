@@ -1,0 +1,35 @@
+# Dependencies
+/node_modules
+/cache
+/artifacts
+/output
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build directory
+/build
+
+# temp files
+*.tmp
+*.swp
+*.swo
+*.tmp.*
+*.sublime-project
+*.sublime-workspace
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+ptau-ceremony/*.zkey
+ptau-ceremony/*.ptau
+ptau-ceremony/*.json

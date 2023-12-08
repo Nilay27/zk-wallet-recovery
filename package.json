@@ -1,0 +1,25 @@
+{
+    "name": "zk-face-recovery",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "devDependencies": {
+      "chai": "^4.3.6",
+      "circomlib": "^2.0.3",
+      "circomlibjs": "^0.1.2",
+      "hardhat": "^2.19.1",
+      "hardhat-circom": "^3.3.2",
+      "prettier": "^3.1.0",
+      "prettier-plugin-solidity": "^1.2.0"
+    },
+    "engines": {
+      "node": ">=20"
+    },
+    "scripts": {
+      "circom:dev": "hardhat circom --deterministic --debug --verbose",
+      "circom:prod": "hardhat circom --verbose",
+      "test": "hardhat test",
+      "prettier:solidity": "./node_modules/.bin/prettier --write contracts/**/*.sol"
+    }
+  }
+  

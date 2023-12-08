@@ -90,7 +90,12 @@ function Registration() {
           ))}
         </HStack>
       </div>
-      <Button className="submit-button" colorScheme="blue" onClick={handleSubmit}>
+      <Button className="submit-button"  
+        rounded={'full'}
+        colorScheme={'pink'}
+        bgColor={'#FC72FF'}
+        color={'#311C31'} 
+        onClick={handleSubmit}>
         Register
       </Button>
     </div>      

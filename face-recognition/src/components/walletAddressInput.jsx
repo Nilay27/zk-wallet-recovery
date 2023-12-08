@@ -41,7 +41,14 @@ const WalletAddressInput = ({ onAddressSubmit }) => {
         />
       </Center>
       <Center>
-        <Button onClick={handleSubmit} isLoading={isChecking}>
+        <Button 
+        onClick={handleSubmit} 
+        isLoading={isChecking}
+        rounded={'full'}
+        colorScheme={'pink'}
+        bgColor={'#FC72FF'}
+        color={'#311C31'} 
+        >
           Check Address
         </Button>
       </Center>

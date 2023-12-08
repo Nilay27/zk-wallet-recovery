@@ -33,3 +33,6 @@ Thumbs.db
 ptau-ceremony/*.zkey
 ptau-ceremony/*.ptau
 ptau-ceremony/*.json
+
+face-recognition/public/*.zkey
+face-recognition/public/*.wasm

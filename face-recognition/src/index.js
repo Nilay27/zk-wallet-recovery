@@ -3,11 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { FaceApiProvider } from './components/faceApiContext';
+import { VideoProvider } from './components/videoContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <FaceApiProvider>
+      <VideoProvider>
+        <App />
+      </VideoProvider>
+    </FaceApiProvider>
   </React.StrictMode>
 );
 

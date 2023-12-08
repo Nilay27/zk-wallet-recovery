@@ -15,6 +15,7 @@
   );
 
   color: white;
+  font-size: larger;
 }
 
 .App-header {
@@ -27,6 +28,7 @@
   /* justify-content: space-between; This was causing the gap */
   font-size: calc(10px + 2vmin);
   color: white;
+  padding: 20px;
 }
 
 .navbar {

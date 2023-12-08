@@ -1,72 +1,56 @@
-import logo from './logo.svg';
+import * as faceapi from 'face-api.js';
 import './App.css';
-import Registeration from './components/registration';
+import Registration from './components/registration';
+import Recovery from './components/recovery';
 import WalletAddressInput from './components/walletAddressInput';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import {ChakraProvider, Box, Center} from "@chakra-ui/react";
-import { use } from 'chai';
+import { VideoContext } from './components/videoContext'; // Update the import path as necessary
 
 
 function App() {
   const [isRegistered, setIsRegistered] = useState(false);
-  const videoRef = useRef(null);
-  const isVideoReady = useRef(false);
-  const canvasRef = useRef(null);
-
-  // Function to handle video metadata loading
-  const handleVideoOnLoad = () => {
-    if (videoRef.current) {
-      isVideoReady.current = true;
-      console.log('Video dimensions:', videoRef.current.videoWidth, videoRef.current.videoHeight);
-    }
-  };
-
+  const { videoRef, handleVideoOnLoad} = useContext(VideoContext);
+  
   const checkWalletAddress = async (address) => {
     // Replace with your contract interaction logic
     // For example:
     // const owner = await myContract.methods.getOwnerOf(address).call();
     // return owner;
     console.log(address);
-    return {isRegistered: "false", address: address};
+    setIsRegistered(true);
+    return {isRegistered: "true", address: address};
   };
 
-  const startVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: {} })
-      .then((stream) => {
-        let video = videoRef.current;
-        if (video) {
-          video.srcObject = stream;
-        }
-      })
-      .catch((err) => console.error('Error accessing camera:', err));
-  };
-
-  useEffect(() => {
-    startVideo();
-  }, []);
-
+  
   return (
     <ChakraProvider>
-    <div className="App">
-      <header className="App-header">
-        <Box className="navbar">
-          ZK Face Recovery
-        </Box>
-      </header>
-      <WalletAddressInput onAddressSubmit={checkWalletAddress}/>
-      <Center className="video-container">
-      <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          className="video-element"
-          onLoadedMetadata={handleVideoOnLoad} // Add this event handler
-        ></video>
-        <div className="face-guide"></div>
-      </Center>
-      <Registeration />
-    </div>
+        <div className="App">
+          <header className="App-header">
+            <Box className="navbar"
+            bgColor={'white.400'}
+            color={'black'} 
+            fontWeight={'bold'}
+            fontFamily={'monospace'}
+            fontSize={'3xl'}
+            // bgGradient={'linear(to-r, green.200, pink.500)'}
+            >
+              ZK Wallet Recovery
+            </Box>
+          </header>
+          <WalletAddressInput onAddressSubmit={checkWalletAddress}/>
+          <Center className="video-container">
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              className="video-element"
+              onLoadedMetadata={handleVideoOnLoad} // Add this event handler
+            ></video>
+            <div className="face-guide"></div>
+          </Center>
+          {isRegistered ? <Recovery /> : <Registration onRegistration = {setIsRegistered}/>}
+        </div>
     </ChakraProvider>
     
   );

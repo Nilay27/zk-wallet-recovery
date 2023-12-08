@@ -1,21 +1,29 @@
-import React, { useState } from 'react';
-import { Center, VStack, Input, ChakraProvider, Select, Box, Button, HStack, useToast } from '@chakra-ui/react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Input, Select, Button, HStack, useToast } from '@chakra-ui/react';
+import { VideoContext } from './videoContext';
+import ReedSolomonEC from '../fuzzy_commitment/ErrorCorrection';
+import * as helper from '../fuzzy_commitment/Helpers';
 
-function Registration() {
+
+function Registration({onRegistration}) {
   // State to store the selected questions and their answers
   const [qa, setQa] = useState([
     { question: '', answer: '' },
     { question: '', answer: '' },
     { question: '', answer: '' }
   ]);
+  const [isQaSubmitted, setIsQaSubmitted] = useState(false); // State to track if the form is submitted
   const toast = useToast();
+  const { handleCaptureClick, detections} = useContext(VideoContext);
+  const rc_ec = new ReedSolomonEC();
 
   // Example questions
   const questions = [
     "What is your favorite color?",
-    "What is your hometown?",
+    "A pin that you will never forget?",
+    "Where is your hometown?",
     "What is your hobby?",
-    // ... add more questions as needed
+    "Your Social Security Number?"
   ];
 
   // Handle question selection
@@ -35,7 +43,7 @@ function Registration() {
   };
 
   // Function to handle form submission
-  const handleSubmit = () => {    
+  const handleSubmit = async () => {    
     // ensure all questions are answered and all questions are different
     if(qa[0].answer === '' || qa[1].answer === '' || qa[2].answer === '') {
       toast({
@@ -59,7 +67,60 @@ function Registration() {
       return; // Exit the function if there are duplicate questions
     }
     console.log(qa);
+    setIsQaSubmitted(true);
+     
+    await handleCaptureClick();
   };
+
+  // once the qa is submitted, save the qa as object in local storage
+    useEffect(() => {
+        if(isQaSubmitted) {
+            localStorage.setItem('qa', JSON.stringify(qa));
+        }
+    }, [isQaSubmitted]);
+
+    useEffect(() => {
+      if (detections.length > 0) {
+        console.log(detections);
+        // toast for generating fuzzy commitment
+        toast({
+          title: "Generating fuzzy commitment...",
+          description: "Please wait...",
+          status: "info",
+          duration: 3000,
+          isClosable: true,
+        })
+        const processDetections = async () => {
+          if (detections.length > 0) {
+            const { commitment, featureVectorHash } = await rc_ec.fuzzyCommitment(detections[0].descriptor);
+            console.log('commitment', commitment);
+            console.log('featureVectorHash', featureVectorHash);
+            // console.log('Wallet contract', walletContract);
+            // const personalInfoHash = await helper.sha256ToBigInt('kumarnilay-attackontitan');
+            // const hashOfPersonalInfoHash = await helper.poseidonHash([personalInfoHash]);
+            // const contractCallArguments = [featureVectorHash, hashOfPersonalInfoHash, commitment];
+            // console.log('contractCallArguments', contractCallArguments);
+            // console.log('sending commitment to wallet for registration');
+            // await walletContract.registerForRecovery(featureVectorHash, hashOfPersonalInfoHash, [...commitment]);
+            // console.log('commitment registered');
+            // Handle the rest of your logic here, such as updating state or notifying the user
+          }
+        };
+        processDetections().catch(console.error);
+      }else{
+        toast({
+          title: "Error",
+          description: "No face detected",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        })
+        return;
+      }
+      
+      // make a call to the contract to register the user
+      onRegistration(true);
+    }, [detections]);
 
   return (
     <div>

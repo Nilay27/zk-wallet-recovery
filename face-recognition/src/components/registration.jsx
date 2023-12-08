@@ -16,6 +16,7 @@ function Registration({onRegistration}) {
   const toast = useToast();
   const { handleCaptureClick, detections} = useContext(VideoContext);
   const rc_ec = new ReedSolomonEC();
+  const [personalInfo, setPersonalInfo] = useState('');
 
   // Example questions
   const questions = [
@@ -68,6 +69,10 @@ function Registration({onRegistration}) {
     }
     console.log(qa);
     setIsQaSubmitted(true);
+    // concat all questions and respective answers and set it as personal info also remove any spaces and convert to lowercase
+    const personalInfo = qa.map(item => item.question + item.answer).join('').replace(/\s/g, '').toLowerCase();
+    setPersonalInfo(personalInfo);
+    console.log(personalInfo);
      
     await handleCaptureClick();
   };
@@ -94,13 +99,14 @@ function Registration({onRegistration}) {
           if (detections.length > 0) {
             const { commitment, featureVectorHash } = await rc_ec.fuzzyCommitment(detections[0].descriptor);
             console.log('commitment', commitment);
+            localStorage.setItem('commitment', JSON.stringify(commitment));
             console.log('featureVectorHash', featureVectorHash);
             // console.log('Wallet contract', walletContract);
-            // const personalInfoHash = await helper.sha256ToBigInt('kumarnilay-attackontitan');
-            // const hashOfPersonalInfoHash = await helper.poseidonHash([personalInfoHash]);
-            // const contractCallArguments = [featureVectorHash, hashOfPersonalInfoHash, commitment];
-            // console.log('contractCallArguments', contractCallArguments);
-            // console.log('sending commitment to wallet for registration');
+            const personalInfoHash = await helper.sha256ToBigInt(personalInfo);
+            const hashOfPersonalInfoHash = await helper.poseidonHash([personalInfoHash]);
+            const contractCallArguments = [featureVectorHash, hashOfPersonalInfoHash, commitment];
+            console.log('contractCallArguments', contractCallArguments);
+            console.log('sending commitment to wallet for registration');
             // await walletContract.registerForRecovery(featureVectorHash, hashOfPersonalInfoHash, [...commitment]);
             // console.log('commitment registered');
             // Handle the rest of your logic here, such as updating state or notifying the user

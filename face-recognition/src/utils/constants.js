@@ -1,5 +1,13 @@
 export const VerifierGoerli = '0x0b0262f3928C8A895CD3d324a952567F5fb5145a';
-export const WalletGoerli = '0xbbc1f2F55966c32D45ce8Ed864b4f2Bf13178dbB';
+export const WalletGoerli = '0x1aC472423AE7508b8E0D54A54120782ab4D5D550';
+export const VerifierArbitrum = '0xA5bDD9eC5E0d3dAd528C496a09FeD0f91a6bBf29'
+export const WalletArbitrum = '0xafca85162b0aBdd3CC59418b447E2cc7605Bd89f';
+export const VerifierScroll = '0xafca85162b0aBdd3CC59418b447E2cc7605Bd89f';
+export const WalletScroll = '0x61B6F8136edd8Ac5782d8aFBD5b5D098D9B50B50';
+export const VerifierZKEVM = '0xe89ed8d166c043Cc7753Da7eAcC87a07281cb057'
+export const WalletZKEVM = '0xA5bDD9eC5E0d3dAd528C496a09FeD0f91a6bBf29';
+export const VerifierFilecoin = '0x61B6F8136edd8Ac5782d8aFBD5b5D098D9B50B50'
+export const WalletFilecoin = '0x6bb5BCD9fd3fc63E97742f051f00d40Af5a10e96';
 export const VerifierABI = [
     {
       "inputs": [

@@ -3,9 +3,10 @@ import { Input, Select, Button, HStack, useToast } from '@chakra-ui/react';
 import { VideoContext } from './videoContext';
 import ReedSolomonEC from '../fuzzy_commitment/ErrorCorrection';
 import * as helper from '../fuzzy_commitment/Helpers';
+import {getSignedContract} from '../utils/ethereum';
+import { WalletABI, WalletGoerli } from '../utils/constants';
 
-
-function Registration({onRegistration}) {
+function Registration() {
   // State to store the selected questions and their answers
   const [qa, setQa] = useState([
     { question: '', answer: '' },
@@ -17,6 +18,7 @@ function Registration({onRegistration}) {
   const { handleCaptureClick, detections} = useContext(VideoContext);
   const rc_ec = new ReedSolomonEC();
   const [personalInfo, setPersonalInfo] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   // Example questions
   const questions = [
@@ -98,8 +100,12 @@ function Registration({onRegistration}) {
         const processDetections = async () => {
           if (detections.length > 0) {
             const { commitment, featureVectorHash } = await rc_ec.fuzzyCommitment(detections[0].descriptor);
-            console.log('commitment', commitment);
-            localStorage.setItem('commitment', JSON.stringify(commitment));
+            
+            const commitmentArray = Array.from(commitment); // Convert Uint8Array to regular array
+            console.log('commitmentArray', commitmentArray);
+            localStorage.setItem('commitment', JSON.stringify(commitmentArray));
+
+
             console.log('featureVectorHash', featureVectorHash);
             // console.log('Wallet contract', walletContract);
             const personalInfoHash = await helper.sha256ToBigInt(personalInfo);
@@ -107,13 +113,27 @@ function Registration({onRegistration}) {
             const contractCallArguments = [featureVectorHash, hashOfPersonalInfoHash, commitment];
             console.log('contractCallArguments', contractCallArguments);
             console.log('sending commitment to wallet for registration');
-            // await walletContract.registerForRecovery(featureVectorHash, hashOfPersonalInfoHash, [...commitment]);
-            // console.log('commitment registered');
-            // Handle the rest of your logic here, such as updating state or notifying the user
+            const walletContract = getSignedContract(WalletGoerli,WalletABI);
+            const isRegistered = await walletContract.registerForRecovery(featureVectorHash, hashOfPersonalInfoHash, [...commitment]);
+            setIsLoading(true);
+            walletContract.on('RecoveryRegistered', (newOwner, feature_vec_hash) => {
+              console.log('WalletRecovered event emitted');
+              console.log('newOwner', newOwner);
+              console.log('nullifierHash', feature_vec_hash);
+              toast({
+                title: "Success",
+                description: "Face Registered for recovery",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+              })
+              setIsLoading(false);
+            });
+            
           }
         };
         processDetections().catch(console.error);
-      }else{
+      }else if (isQaSubmitted && detections.length === 0){
         toast({
           title: "Error",
           description: "No face detected",
@@ -124,8 +144,7 @@ function Registration({onRegistration}) {
         return;
       }
       
-      // make a call to the contract to register the user
-      onRegistration(true);
+      
     }, [detections]);
 
   return (
@@ -162,6 +181,8 @@ function Registration({onRegistration}) {
         colorScheme={'pink'}
         bgColor={'#FC72FF'}
         color={'#311C31'} 
+        isLoading={isLoading}
+        loadingText="Registering"
         onClick={handleSubmit}>
         Register
       </Button>

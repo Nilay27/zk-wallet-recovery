@@ -48,6 +48,22 @@ contract Wallet {
         return true;
     }
 
+    function removeRecovery(uint256[128] memory _zeroCommitment) public returns(bool){
+        require(msg.sender == owner, "Only owner can remove recovery");
+        bool hasNonZeroElement=false;
+        for(uint i = 0; i < 128; i++){
+            if(_zeroCommitment[i] != 0){
+                hasNonZeroElement = true;
+                break;
+            }   
+        }
+        require(hasNonZeroElement==false, "Invalid ZeroCommitment");
+        featureVectorHash = 0;
+        hashOfPersonalInfoHash = 0;
+        commitment = _zeroCommitment;
+        return true;
+    }
+
     function getFeatureVectorHash() public view returns (uint256) {
         return featureVectorHash;
     }

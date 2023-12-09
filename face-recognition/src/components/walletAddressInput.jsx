@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Box, Input, Button, Center, Text } from '@chakra-ui/react';
+import { WalletGoerli, WalletABI } from '../utils/constants';
 
 const WalletAddressInput = ({ onAddressSubmit }) => {
   const [walletAddress, setWalletAddress] = useState('');
   const [ownerInfo, setOwnerInfo] = useState({});
   const [isChecking, setIsChecking] = useState(false);
+  
 
   const handleAddressChange = (event) => {
     setWalletAddress(event.target.value);

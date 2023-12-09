@@ -5,13 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { FaceApiProvider } from './components/faceApiContext';
 import { VideoProvider } from './components/videoContext';
+import { WalletConnectProvider } from './components/walletConnectContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <FaceApiProvider>
       <VideoProvider>
-        <App />
+        <WalletConnectProvider>
+          <App />
+        </WalletConnectProvider>
       </VideoProvider>
     </FaceApiProvider>
   </React.StrictMode>

@@ -30,7 +30,7 @@ export const setupEthereumEventListeners = (ethereum) => {
   });
 
   window.ethereum.on('accountsChanged', async (accounts) => {
-    // window.location.reload();
+    window.location.reload();
   });
 
   return ethereum;

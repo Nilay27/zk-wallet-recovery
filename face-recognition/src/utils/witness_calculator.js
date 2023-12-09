@@ -124,15 +124,12 @@ module.exports = async function builder(code, options) {
     }
   
     async _doCalculateWitness(input, sanityCheck) {
-      console.log('Input in witness calculator:', input);
       // input[]
       //input is assumed to be a map from signals to arrays of bigints
       this.instance.exports.init(this.sanityCheck || sanityCheck ? 1 : 0);
       const keys = Object.keys(input);
-      console.log('Keys:', keys);
       var input_counter = 0;
       keys.forEach((k) => {
-        console.log('k:', k);
         const h = fnvHash(k);
         const hMSB = parseInt(h.slice(0, 8), 16);
         const hLSB = parseInt(h.slice(8, 16), 16);
@@ -142,8 +139,7 @@ module.exports = async function builder(code, options) {
         if (signalSize < 0) {
           throw new Error(`Signal ${k} not found\n`);
         }
-        console.log(`Signal ${k} size: ${signalSize}`);
-        console.log(`fArr length: ${fArr.length}`);
+
         if (fArr.length < signalSize) {
           throw new Error(`Not enough values for input signal ${k}\n`);
         }

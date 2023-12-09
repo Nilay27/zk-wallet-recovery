@@ -4,7 +4,7 @@ require("@nomicfoundation/hardhat-toolbox");
 require('dotenv').config();
 
 
-const infuraApiKey = process.env.ARBISCAN_API_KEY || "";
+const infuraApiKey = process.env.INFURA_API_KEY || "";
 const etherscanApiKey = process.env.ETHERSCAN_API_KEY;
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -49,6 +49,10 @@ module.exports = {
       url: "https://api.calibration.node.glif.io/rpc/v1",
       accounts: [process.env.PVT_KEY],
     },
+    base_sepolia: {
+      url: 'https://sepolia.base.org',
+      accounts: [process.env.PVT_KEY],
+      },
   },
   etherscan: {
     apiKey: {
@@ -57,6 +61,7 @@ module.exports = {
       scrollSepolia: "abc",
       polygonZkEVMTestnet: process.env.POLYGONSCAN_API_KEY,
       calibrationnet: process.env.ETHERSCAN_API_KEY,
+      base_sepolia: process.env.ETHERSCAN_API_KEY,
     },
     customChains: [
       {
@@ -76,6 +81,14 @@ module.exports = {
           browserURL: 'https://goerli.arbiscan.io',
         },
       },
+      {
+        network: 'base_sepolia',
+        chainId: 84532,
+        urls: {
+          apiURL: "https://api-goerli.basescan.org",
+          browserURL: 'https://base-sepolia.blockscout.com/',
+        },
+      }
     ],
   },
 };

@@ -1,7 +1,7 @@
 const hre = require("hardhat");
 
 async function main() {
-  const verifierAddress = "0xafca85162b0aBdd3CC59418b447E2cc7605Bd89f"
+  const verifierAddress = "0xe89ed8d166c043Cc7753Da7eAcC87a07281cb057"
 
   const wallet = await hre.ethers.deployContract("Wallet", [verifierAddress]);
 

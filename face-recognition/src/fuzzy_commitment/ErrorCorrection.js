@@ -3,7 +3,7 @@ import * as helper from './Helpers';
 class ReedSolomonEC {
   // Define all Constants
   static MESSAGE_LENGTH = 128;
-  static ERROR_CORRECTION_LENGTH = 12;
+  static ERROR_CORRECTION_LENGTH = 16;
   static SECRET_LENGTH = 64;
 
   constructor() {

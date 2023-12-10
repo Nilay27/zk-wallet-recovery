@@ -58,7 +58,7 @@ const WalletAddressInput = ({ onAddressSubmit }) => {
         <Text color={"white"}>Owner Information: {ownerInfo.address}</Text>
       </Center>
       <Center>
-      <Text color={"white"}>Is Recovery Resitered: {ownerInfo.isRegistered}</Text>
+      <Text color={"white"}>Is Recovery Registered: {ownerInfo.isRegistered}</Text>
       </Center>
     </Box>
     </div>

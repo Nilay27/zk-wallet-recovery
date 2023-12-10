@@ -134,7 +134,6 @@ module.exports = async function builder(code, options) {
         const hMSB = parseInt(h.slice(0, 8), 16);
         const hLSB = parseInt(h.slice(8, 16), 16);
         const fArr = flatArray(input[k]);
-        console.log('fArr:', fArr);
         let signalSize = this.instance.exports.getInputSignalSize(hMSB, hLSB);
         if (signalSize < 0) {
           throw new Error(`Signal ${k} not found\n`);

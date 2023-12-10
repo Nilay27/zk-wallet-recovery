@@ -52,7 +52,7 @@ function App() {
         <div className="App">
           <header className="App-header">
             <Box className="navbar"
-            bgColor={'white.400'}
+            bgColor={'purple.400'}
             color={'black'} 
             fontWeight={'bold'}
             fontFamily={'monospace'}
